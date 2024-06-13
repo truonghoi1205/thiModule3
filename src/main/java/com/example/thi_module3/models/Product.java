@@ -7,27 +7,8 @@ public class Product {
     private int quantity;
     private String color;
     private String description;
+    private int categoryId;
     private Category category;
-
-    public Product() {
-    }
-
-    public Product(int id, String name, double price, int quantity, String color, String description) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.color = color;
-        this.description = description;
-    }
-
-    public Product(String name, double price, int quantity, String color, String description) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.color = color;
-        this.description = description;
-    }
 
     public int getId() {
         return id;
@@ -75,6 +56,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Category getCategory() {
