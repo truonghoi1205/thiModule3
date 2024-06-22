@@ -48,6 +48,7 @@ public class ProductRepo implements IProductRepo {
         ps.setString(5, product.getDescription());
         ps.setInt(6, product.getCategoryId());
         ps.executeUpdate();
+        ps.close();
     }
 
     @Override
@@ -62,9 +63,9 @@ public class ProductRepo implements IProductRepo {
 
     @Override
     public List<Product> searchProductByName(String keyword) throws SQLException {
-       List<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
         Connection connection = new ConnectDB().getConnection();
-        String sql = "select * from product where name like ?";
+        String sql = "select p.*, c.name as 'cName' from product p join category c on c.id = p.categoryId where p.name like ?";
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, "%" + keyword + "%");
         ResultSet rs = ps.executeQuery();
@@ -77,10 +78,27 @@ public class ProductRepo implements IProductRepo {
             product.setColor(rs.getString("color"));
             product.setDescription(rs.getString("description"));
             Category category = new Category();
-            category.setName(rs.getString("name"));
+            category.setId(rs.getInt("id"));
+            category.setName(rs.getString("cName"));
             product.setCategory(category);
             products.add(product);
         }
         return products;
+    }
+
+    @Override
+    public void updateProduct(Product product) throws SQLException {
+        Connection connection = new ConnectDB().getConnection();
+        String sql = "update product set name = ?, price = ?, quantity = ?, color = ?, description = ?, categoryId = ? where id =? ";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, product.getName());
+        ps.setDouble(2, product.getPrice());
+        ps.setInt(3, product.getQuantity());
+        ps.setString(4, product.getColor());
+        ps.setString(5, product.getDescription());
+        ps.setInt(6, product.getCategoryId());
+        ps.setInt(7, product.getId());
+        ps.executeUpdate();
+        ps.close();
     }
 }

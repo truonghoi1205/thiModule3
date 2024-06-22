@@ -45,4 +45,13 @@ public class ProductService implements IProductService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void updateProduct(Product product) {
+        try {
+            productRepo.updateProduct(product);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
